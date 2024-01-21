@@ -1,21 +1,44 @@
 import { PrismaService } from "src/database/prisma.service";
-import { MembersRepository } from "../members-repository";
-import { randomUUID } from "node:crypto";
+import { HotelsRepository } from "../hotels-repository";
 import { Injectable } from "@nestjs/common";
 
+export interface changeProps {
+    id: number;
+    name?: string;
+    description?: string;
+    state?: string;
+    city?: string;
+}
+
 @Injectable()
-export class PrismaMemberRepository implements MembersRepository {
+export class PrismaHotelRepository implements HotelsRepository {
     constructor(
         private prisma: PrismaService
     ) {}
-
-    async create(name: string, memberFunction: string): Promise<void> {
-        await this.prisma.teamMember.create({
+    async create(nome: string, description: string, state: string, city: string): Promise<void> {
+        await this.prisma.hotel.create({
             data: {
-              id: randomUUID(),
-              name,
-              function: memberFunction
+                nome, 
+                description, 
+                state, 
+                city
             }
+        })
+    }
+
+    async change(hotelChangeObject: changeProps): Promise<void> {
+        const {id, name, description, state, city} = hotelChangeObject
+
+        await this.prisma.hotel.update({
+            where: { 
+                id, 
+            },
+            data: {
+                nome: name,
+                description,
+                state,
+                city
+            },
         })
     }
 }

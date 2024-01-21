@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { PrismaService } from './database/prisma.service';
-import { MembersRepository } from './repositories/members-repository';
-import { PrismaMemberRepository } from './repositories/prisma/prisma-member-repository';
+import { HotelsRepository } from './repositories/hotels-repository';
+import { PrismaHotelRepository } from './repositories/prisma/prisma-member-repository';
 
 @Module({
   imports: [],
@@ -10,8 +10,8 @@ import { PrismaMemberRepository } from './repositories/prisma/prisma-member-repo
   providers: [
     PrismaService,
     {
-      provide: MembersRepository,
-      useClass: PrismaMemberRepository,
+      provide: HotelsRepository,
+      useClass: PrismaHotelRepository,
     }
   ]
 })

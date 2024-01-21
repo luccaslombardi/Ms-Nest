@@ -10,8 +10,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model TeamMember {
-  id String @id
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
   name String
-  function String
+  phone String
+  birthDate DateTime
+  profile String
 }
+
+model Hotel {
+  id Int @id @default(autoincrement())
+  nome String
+  description String
+  state String
+  city String
+  categories CategoryOnHotels[]
+}
+
+model CategoryOnHotels {
+  hotel Hotel @relation(fields: [hotelId], references: [id])
+  hotelId Int
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+   @@id([hotelId, categoryId])
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  hotels CategoryOnHotels[]
+}
+
+
+
+

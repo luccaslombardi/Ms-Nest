@@ -1,17 +1,20 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateTeamMemberBody } from './dtos/create-team-member-body';
-import { MembersRepository } from './repositories/members-repository';
+import { CreateHotelBody } from './dtos/create-hotel';
+import { ChangeHotelBody } from './dtos/change-hotel-info';
+import { HotelsRepository } from './repositories/hotels-repository';
 
 @Controller('app')
 export class AppController {
-  constructor(
-    private membersRepository: MembersRepository
-  ) {}
+  constructor(private hotelsRepository: HotelsRepository) {}
 
-  @Post('createMember')
-  async createMember(@Body() body: CreateTeamMemberBody) {
-    const { name, 'function': memberFunction } = body;
+  @Post('createHotel')
+  async createHotel(@Body() body: CreateHotelBody) {
+    const { name, description, state, city } = body;
+    await this.hotelsRepository.create(name, description, state, city);
+  }
 
-    await this.membersRepository.create(name, memberFunction)
+  @Post('changeHotel')
+  async changeHotel(@Body() body: ChangeHotelBody) {
+    await this.hotelsRepository.change(body);
   }
 }
